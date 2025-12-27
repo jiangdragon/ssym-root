@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.ssym</groupId>
+        <artifactId>ssym-root</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ssym.avivacofco</groupId>
+    <artifactId>aviva-cofco-parent</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <description>中英保险</description>
+
+    <properties>
+        <!--公共属性部分-->
+        <revision>1.0.0</revision>
+        <bcprov-jdk15on.vision>1.70</bcprov-jdk15on.vision>
+        <maven-shade-plugin.vision>3.2.4</maven-shade-plugin.vision>
+        <hutool.vision>5.8.22</hutool.vision>
+        <apache-poi.vision>5.2.2</apache-poi.vision>
+        <log4j.vision>2.17.1</log4j.vision>
+        <slf4j-api.vision>1.7.36</slf4j-api.vision>
+    </properties>
+
+    <modules>
+        <module>aviva-cofco-rate</module>
+    </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.vision}</version>
+            </dependency>
+            <!-- Apache POI for xlsx -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${apache-poi.vision}</version>
+            </dependency>
+            <!-- Apache POI for xls -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${apache-poi.vision}</version>
+            </dependency>
+            <!-- logging.log4j -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.vision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.vision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j.vision}</version>
+            </dependency>
+            <!-- SLF4J API -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.vision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
