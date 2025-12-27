@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.ssym</groupId>
+        <artifactId>ssym-root</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ssym.dajia</groupId>
+    <artifactId>dajia-parent</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <description>大家项目parent</description>
+
+    <properties>
+        <!--公共属性部分-->
+        <revision>1.0.0</revision>
+        <bcprov-jdk15on.vision>1.70</bcprov-jdk15on.vision>
+        <maven-shade-plugin.vision>3.2.4</maven-shade-plugin.vision>
+        <hutool.vision>5.8.22</hutool.vision>
+    </properties>
+
+    <modules>
+        <module>vendor-util</module>
+        <module>vendor-apipost</module>
+    </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bcprov-jdk15on.vision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.vision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
