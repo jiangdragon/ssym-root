@@ -1,6 +1,9 @@
 package com.ssym.avivacofco.test;
 
+import com.ssym.avivacofco.rate.AbstractService;
 import com.ssym.avivacofco.rate.impl.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.stream.IntStream;
  * @Time 2025/9/22
  */
 public class RateTest {
+    private static final Logger logger = LoggerFactory.getLogger(RateTest.class);
     private static final String RESOURCES_PATH = "D:\\workspace\\naga-silly\\aviva-cofco-parent\\aviva-cofco-rate\\src\\main\\resources\\";
 
     public static void main(String[] args) {
@@ -90,9 +94,9 @@ public class RateTest {
             try {
                 ReducedPrem reducedPrem = new ReducedPrem("211509", "150901", securityFlags.get(index));
                 reducedPrem.createSqlFile(filePath, sqlFilePath + "_" + index + ".txt", index);
-                System.out.println("ReducedPremTest sheet index:" + index);
+                logger.info("ReducedPremTest sheet index:{}", index);
             } catch (Exception ex) {
-                System.out.println("ReducedPremTest Exception:" + ex.getMessage());
+                logger.info("ReducedPremTest Exception:", ex);
             }
         });
     }

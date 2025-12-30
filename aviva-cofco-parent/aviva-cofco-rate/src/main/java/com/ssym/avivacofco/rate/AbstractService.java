@@ -52,6 +52,18 @@ public abstract class AbstractService {
      * 责任编码
      */
     protected String dutyCode = "";
+    /**
+     * insertSql行数
+     */
+    protected int insertSqlLine = 1;
+    /**
+     * sqlInsert模板
+     */
+    protected String sqlInsert = "";
+    /**
+     * sqlValues模板
+     */
+    protected String sqlValues = "";
 
 
     protected Map<String, String> props = new HashMap<>();
@@ -144,15 +156,41 @@ public abstract class AbstractService {
         File file = FileUtil.createFile(sqlFilePath);
         FileWriter fileWriter = new FileWriter(file.getAbsoluteFile(), true);
         BufferedWriter bw = new BufferedWriter(fileWriter);
+        int[] index = {1};
         rateData.stream().forEach(map -> {
             try {
-                bw.write(this.createSql(map));
+                // Insert into
+                int remainder = (index[0] - 1) % this.insertSqlLine;
+                if (remainder == 0) {
+                    bw.write(this.sqlInsert);
+                }
+                // VALUES
+                bw.write(this.createSql(map, this.sqlValues));
+                bw.write(((remainder + 1) == this.insertSqlLine) ? ";" : ",");
                 bw.newLine();
+                index[0]++;
             } catch (Exception e) {
                 System.out.println("Exception:" + e.getMessage());
             }
         });
         bw.close();
+    }
+
+    protected String createSql(Map<String, String> requestMap, String sqlText) throws Exception {
+        if (!sqlText.contains("$")) {
+            return sqlText;
+        }
+
+        Pattern pattern = Pattern.compile("\\$\\{(.+?)\\}");
+        Matcher matcher = pattern.matcher(sqlText);
+        String resultText = "";
+        while (matcher.find()) {
+            String keyVal = matcher.group(1);
+            String value = requestMap.get(keyVal);
+            resultText = matcher.replaceFirst(value);
+            matcher = pattern.matcher(resultText);
+        }
+        return resultText;
     }
 
     /**
@@ -163,21 +201,7 @@ public abstract class AbstractService {
      * @throws Exception
      */
     protected String createSql(Map<String, String> requestMap) throws Exception {
-        if (!this.sqlText.contains("$")) {
-            return this.sqlText;
-        }
-
-        Pattern pattern = Pattern.compile("\\$\\{(.+?)\\}");
-        Matcher matcher = pattern.matcher(this.sqlText);
-        String resultText = "";
-        while (matcher.find()) {
-            String keyVal = matcher.group(1);
-            String value = requestMap.get(keyVal);
-            resultText = matcher.replaceFirst(value);
-            matcher = pattern.matcher(resultText);
-        }
-//        System.out.println("SQL resultText:" + resultText);
-        return resultText;
+        return this.createSql(requestMap, this.sqlText);
     }
 
     public String getSqlText() {

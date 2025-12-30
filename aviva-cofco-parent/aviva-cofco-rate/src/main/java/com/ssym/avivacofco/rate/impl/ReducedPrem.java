@@ -34,6 +34,7 @@ public class ReducedPrem extends RowSheetRateService {
         this.riskCode = riskCode;
         this.dutyCode = dutyCode;
         this.securityFlag = securityFlag;
+        this.insertSqlLine = 20000;
     }
 
     /**
@@ -42,10 +43,15 @@ public class ReducedPrem extends RowSheetRateService {
     @Override
     protected void init() {
         // 设置SQL语句
-        this.sqlText = "INSERT INTO RATE_DERATING_PREM (RISKCODE, DUTYCODE, MINAGE, MAXAGE, GENDER, PAYUNIT, PAYPERIOD, PERIODFLAG,"
-                + "PERIOD, POLICYYEAR, RATE, SECURITYFLAG, PLANCODE, RETIREAGE) VALUES "
-                + "('" + this.riskCode + "', '" + this.dutyCode + "', ${MINAGE}, ${MAXAGE}, '${GENDER}', '${PAYUNIT}', ${PAYPERIOD},"
-                + " 'L', 0, ${POLICYYEAR},  ${RATE},'" + this.securityFlag + "', null, ${RETIREAGE});";
+//        this.sqlText = "INSERT INTO RATE_DERATING_PREM (RISKCODE, DUTYCODE, MINAGE, MAXAGE, GENDER, PAYUNIT, PAYPERIOD, PERIODFLAG,"
+//                + "PERIOD, POLICYYEAR, RATE, SECURITYFLAG, PLANCODE, RETIREAGE) VALUES "
+//                + "('" + this.riskCode + "', '" + this.dutyCode + "', ${MINAGE}, ${MAXAGE}, '${GENDER}', '${PAYUNIT}', ${PAYPERIOD},"
+//                + " 'L', 0, ${POLICYYEAR},  ${RATE},'" + this.securityFlag + "', null, ${RETIREAGE});";
+        this.sqlInsert = "INSERT INTO RATE_DERATING_PREM (RISKCODE, DUTYCODE, MINAGE, MAXAGE, GENDER, PAYUNIT, PAYPERIOD, PERIODFLAG,"
+                + "PERIOD, POLICYYEAR, RATE, SECURITYFLAG, PLANCODE, RETIREAGE) VALUES ";
+        this.sqlValues = "('" + this.riskCode + "', '" + this.dutyCode + "', ${MINAGE}, ${MAXAGE}, '${GENDER}', '${PAYUNIT}', ${PAYPERIOD},"
+                + " 'L', 0, ${POLICYYEAR},  ${RATE},'" + this.securityFlag + "', null, ${RETIREAGE})";
+
         // 表格设置
         this.headerRowIndex = 5;// 数据表头行号[以0开始]
         this.headerRowCount = 1;// 数据表头行数量
