@@ -37,9 +37,13 @@ var Apipost = Apipost || {};
             "TEST-URL": "https://life-customer-${env}.djbx.com/serve/underwriting/protection",
             "PROD-URL": "https://life-underwaiting.djbx.com/serve/underwriting/protection"
         }, "under-djcwechat": {
-            "LOCAL-URL": "http://127.0.0.1:38083",
+            "LOCAL-URL": "http://127.0.0.1:18089",
             "TEST-URL": "https://life-customer-${env}.djbx.com/serve/underwriting/djcwechat",
             "PROD-URL": "https://life-underwaiting.djbx.com/serve/underwriting/djcwechat"
+        }, "under-letters": {
+            "LOCAL-URL": "http://127.0.0.1:18088",
+            "TEST-URL": "https://life-customer-${env}.djbx.com/serve/underwriting/letters",
+            "PROD-URL": "https://life-underwaiting.djbx.com/serve/underwriting/letters"
         }, "pcmanage": {// 再来人系统访问URL
             "LOCAL-URL": "http://127.0.0.1:18090",
             "TEST-URL": "https://life-customer-${env}.djbx.com/serve/underwriting/pcmanage",

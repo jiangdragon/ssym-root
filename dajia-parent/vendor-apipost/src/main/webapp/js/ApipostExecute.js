@@ -10,7 +10,7 @@
         "FILE_PATH": "C:/Users/Administrator/AppData/Local/apipost/ExternalPrograms",
         // ["local", "dev", "dat", "uat", "vir", "svir", "prod"]
         "CURRENT_EVN": "dev",// ["local", "dev", "dat", "uat", "vir", "svir", "prod"]
-        "JS_FILE": ["ApipostUrl.js", "ApipostWechat.js", "ApipostVendor.js", "ApipostBase64Util.js", "ApipostAesUtil.js", "ApipostRsaUtil.js", "ApipostSM4Util.js"]
+        "JS_FILE": ["ApipostUrl.js", "ApipostWechat.js", "ApipostVendor.js", "ApipostBase64Util.js", "ApipostAesUtil.js", "ApipostRsaUtil.js", "ApipostSM4Util.js", "ApipostStrUtil.js"]
     };
     var _js_content = new Array(ApipostCofig.JS_FILE.length);
     for (var i = 0, len = ApipostCofig.JS_FILE.length; i < len; i++) {
