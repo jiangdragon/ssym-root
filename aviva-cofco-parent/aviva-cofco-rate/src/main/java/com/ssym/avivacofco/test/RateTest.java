@@ -1,6 +1,6 @@
 package com.ssym.avivacofco.test;
 
-import com.ssym.avivacofco.rate.AbstractService;
+import com.ssym.avivacofco.rate.dto.RateInfo;
 import com.ssym.avivacofco.rate.impl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,86 +20,233 @@ public class RateTest {
     private static final String RESOURCES_PATH = "D:\\workspace\\naga-silly\\aviva-cofco-parent\\aviva-cofco-rate\\src\\main\\resources\\";
 
     public static void main(String[] args) {
-        // 现金价值表
-//        RateTest.CashValueTest("现价", "CashValue");
-        // 减额缴清
-//        RateTest.ReducedTest("减额缴清", "Reduced");
+//        // 现金价值表A款模板
+//        RateTest.CashValueATest("CashValueA", "CashValueA");
+//        // 现金价值表B款模板
+//        RateTest.CashValueBTest("CashValueB", "CashValueB");
+//        // 减额缴清保额A款模板
+//        RateTest.ReducedAmntATest("ReducedAmntA", "ReducedAmntA");
+//        // 减额缴清保额B款模板
+//        RateTest.ReducedAmntBTest("ReducedAmntB", "ReducedAmntB");
+//        // 减额交清保费B款模板
+//        RateTest.ReducedPremBTest("ReducedPremB", "ReducedPremB");
+        // 费率表A款模板
+        RateTest.RateATest("RateA", "RateA");
         // 费率表-基本责任
 //        RateTest.RateValTest("费率", "RateVal");
         // 费率表-次标体等级
 //        RateTest.RateAddFeeTest("RateVal", "RateAddFee");
-        // 减额缴清保费费率表
-        RateTest.ReducedPremTest("减额缴清保费", "减额缴清保费");
     }
 
     /**
-     * 现金价值表
+     * 现金价值表A款模板
+     * <br/> RISKCODE：险种编码，本次固定：211510
+     * <br/> DUTYCODE：责任编码，本次固定：151001
+     * <br/> MINAGE, MAXAGE:年龄，这两个值保持一致
+     * <br/> GENDER:性别，0：男，1：女（传编码,如：0）
+     * <br/> PAYUNIT：缴费期间单位，年：Y，周岁：A，趸交：Y（传编码，如：Y）
+     * <br/> PAYPERIOD：缴费期间，传数字，趸交：1
+     * <br/> PERIODFLAG：本次固定：L
+     * <br/> PERIOD：本次固定：0
+     * <br/> POLICYYEAR:保单年度
+     * <br/> RATE：费率（在表基础上/1000）
+     * <br/> AMNT：本次固定：null
+     * <br/> SECURITYFLAG:有无社保，0：无社保，1：有社保
+     * <br/> PLANCODE, RETIREAGE:本次固定：null
      *
      * @param excelName
      * @param sqlName
      */
-    private static void CashValueTest(String excelName, String sqlName) {
+    private static void CashValueATest(String excelName, String sqlName) {
         try {
-            String sqlText = "INSERT INTO NEWLIS.RATE_PRESENTPRICE (RISKCODE, DUTYCODE, MINAGE, MAXAGE, GENDER, PAYUNIT, PAYPERIOD, PERIODFLAG,"
-                    + " PERIOD, POLICYYEAR, RATE, AMNT, SECURITYFLAG, PLANCODE, RETIREAGE) VALUES "
-                    + "('211511', '151102', ${MINAGE}, ${MAXAGE}, '${GENDER}', '${PAYUNIT}', ${PAYPERIOD}, 'L', 0, ${POLICYYEAR},  ${RATE}, null,"
-                    + " '${SECURITYFLAG}', null, ${RETIREAGE});";
             String filePath = RateTest.RESOURCES_PATH + excelName + ".xlsx";
             String sqlFilePath = RateTest.RESOURCES_PATH + sqlName + ".txt";
 
-            CashValue cashValue = new CashValue();
-            cashValue.setSqlText(sqlText);
-            cashValue.createSqlFile(filePath, sqlFilePath, 0);
+            CashValueA cashValueA = new CashValueA("211510", "151001");
+            cashValueA.createSqlFile(filePath, sqlFilePath, 0);
         } catch (Exception ex) {
-            System.out.println("CashValueTest Exception:" + ex.getMessage());
+            System.out.println("CashValueATest Exception:" + ex.getMessage());
         }
     }
 
     /**
-     * 减额缴清
+     * 现金价值表B款模板
+     * <br/> RISKCODE：险种编码，本次固定：211509
+     * <br/> DUTYCODE：责任编码，本次固定：150901
+     * <br/> MINAGE, MAXAGE:年龄，这两个值保持一致
+     * <br/> GENDER:性别，0：男，1：女（传编码,如：0）
+     * <br/> PAYUNIT：缴费期间单位，年：Y，周岁：A，趸交：Y（传编码，如：Y）
+     * <br/> PAYPERIOD：缴费期间，传数字，趸交：1
+     * <br/> PERIODFLAG：本次固定：L
+     * <br/> PERIOD：本次固定：0
+     * <br/> POLICYYEAR:保单年度
+     * <br/> RATE：费率（在表基础上/1000）
+     * <br/> AMNT：本次固定：null
+     * <br/> SECURITYFLAG:有无社保，0：无社保，1：有社保
+     * <br/> PLANCODE:本次固定：null
+     * <br/> RETIREAGE：约定年龄
      *
      * @param excelName
      * @param sqlName
      */
-    private static void ReducedTest(String excelName, String sqlName) {
+    private static void CashValueBTest(String excelName, String sqlName) {
         try {
             String filePath = RateTest.RESOURCES_PATH + excelName + ".xlsx";
-            String sqlFilePath = RateTest.RESOURCES_PATH + sqlName + ".txt";
-            String sqlText = "INSERT INTO NEWLIS.RATE_DERATING (RISKCODE, DUTYCODE, MINAGE, MAXAGE, GENDER, PAYUNIT, PAYPERIOD, PERIODFLAG,"
-                    + "PERIOD, POLICYYEAR, RATE, SECURITYFLAG, PLANCODE, RETIREAGE) VALUES "
-                    + "('211511', '151102', ${MINAGE}, ${MAXAGE}, '${GENDER}', '${PAYUNIT}', ${PAYPERIOD}, 'L', 0, ${POLICYYEAR},  ${RATE},"
-                    + "'${SECURITYFLAG}', null, ${RETIREAGE});";
-            Reduced reduced = new Reduced();
-            reduced.setSqlText(sqlText);
-            reduced.createSqlFile(filePath, sqlFilePath, 0);
+            String sqlFilePath = RateTest.RESOURCES_PATH + sqlName;
+
+            CashValueB cashValueB = new CashValueB("211509", "150901");
+            // 基本责任+可选责任
+            cashValueB.createSqlFile(filePath, sqlFilePath + "_sheet0.txt", 0);
+            // 基本责任
+            cashValueB.createSqlFile(filePath, sqlFilePath + "_sheet1.txt", 1);
         } catch (Exception ex) {
-            System.out.println("ReducedTest Exception:" + ex.getMessage());
+            System.out.println("CashValueBTest Exception:" + ex.getMessage());
         }
     }
 
     /**
-     * 减额缴清保费-两个表格
-     * 表头:保险期间 费期间	性别	约定年龄 保单年度/年龄
-     * sheet:有基本医疗保险 无基本医疗保险
+     * 减额缴清保额A款模板
+     * <br/> RISKCODE：险种编码，本次固定：211510
+     * <br/> DUTYCODE：责任编码，本次固定：151001
+     * <br/> MINAGE, MAXAGE:年龄，这两个值保持一致
+     * <br/> GENDER:性别，0：男，1：女（传编码,如：0）
+     * <br/> PAYUNIT：缴费期间单位，年：Y，周岁：A，趸交：Y（传编码，如：Y）
+     * <br/> PAYPERIOD：缴费期间，传数字，趸交：1
+     * <br/> PERIODFLAG：本次固定：L
+     * <br/> PERIOD：本次固定：0
+     * <br/> POLICYYEAR:保单年度
+     * <br/> RATE：费率（在表基础上/1000）
+     * <br/> AMNT：本次固定：null
+     * <br/> SECURITYFLAG:有无社保，0：无社保，1：有社保
+     * <br/> PLANCODE, RETIREAGE:本次固定：null
      *
      * @param excelName
      * @param sqlName
      */
-    private static void ReducedPremTest(String excelName, String sqlName) {
-        String filePath = RateTest.RESOURCES_PATH + excelName + ".xlsx";
-        String sqlFilePath = RateTest.RESOURCES_PATH + sqlName;
-        // 社保标识:1-有基本医疗保险 0-无基本医疗保险
-        List<String> securityFlags = Arrays.asList("1", "0");
-        IntStream.range(0, securityFlags.size()).forEach(index -> {
-            try {
-                ReducedPrem reducedPrem = new ReducedPrem("211509", "150901", securityFlags.get(index));
-                reducedPrem.createSqlFile(filePath, sqlFilePath + "_" + index + ".txt", index);
-                logger.info("ReducedPremTest sheet index:{}", index);
-            } catch (Exception ex) {
-                logger.info("ReducedPremTest Exception:", ex);
-            }
-        });
+    private static void ReducedAmntATest(String excelName, String sqlName) {
+        try {
+            String filePath = RateTest.RESOURCES_PATH + excelName + ".xlsx";
+            String sqlFilePath = RateTest.RESOURCES_PATH + sqlName + ".txt";
+
+            ReducedAmntA reducedAmntA = new ReducedAmntA("211510", "151001");
+            reducedAmntA.createSqlFile(filePath, sqlFilePath, 0);
+        } catch (Exception ex) {
+            System.out.println("ReducedAmntATest Exception:" + ex.getMessage());
+        }
     }
+
+    /**
+     * 减额缴清保额B款模板
+     * <br/> RISKCODE：险种编码，本次固定：211509
+     * <br/> DUTYCODE：责任编码，本次固定：150901
+     * <br/> MINAGE, MAXAGE:年龄，这两个值保持一致
+     * <br/> GENDER:性别，0：男，1：女（传编码,如：0）
+     * <br/> PAYUNIT：缴费期间单位，年：Y，周岁：A，趸交：Y（传编码，如：Y）
+     * <br/> PAYPERIOD：缴费期间，传数字，趸交：1
+     * <br/> PERIODFLAG：本次固定：L
+     * <br/> PERIOD：本次固定：0
+     * <br/> POLICYYEAR:保单年度
+     * <br/> RATE：费率（在表基础上/1000）
+     * <br/> AMNT：本次固定：null
+     * <br/> SECURITYFLAG:有无社保，0：无社保，1：有社保
+     * <br/> PLANCODE:本次固定：null
+     * <br/> RETIREAGE：约定年龄
+     *
+     * @param excelName
+     * @param sqlName
+     */
+    private static void ReducedAmntBTest(String excelName, String sqlName) {
+        try {
+            String filePath = RateTest.RESOURCES_PATH + excelName + ".xlsx";
+            String sqlFilePath = RateTest.RESOURCES_PATH + sqlName;
+
+            ReducedAmntB reducedAmntB = new ReducedAmntB("211509", "150901");
+            // 基本责任+可选责任
+            reducedAmntB.createSqlFile(filePath, sqlFilePath + "_sheet0.txt", 0);
+            // 基本责任
+            reducedAmntB.createSqlFile(filePath, sqlFilePath + "_sheet1.txt", 1);
+        } catch (Exception ex) {
+            System.out.println("ReducedAmntBTest Exception:" + ex.getMessage());
+        }
+    }
+
+    /**
+     * 减额缴清保费B款模板
+     * <br/> RISKCODE：险种编码，本次固定：211509
+     * <br/> DUTYCODE：责任编码，本次固定：150901
+     * <br/> MINAGE, MAXAGE:年龄，这两个值保持一致
+     * <br/> GENDER:性别，0：男，1：女（传编码,如：0）
+     * <br/> PAYUNIT：缴费期间单位，年：Y，周岁：A，趸交：Y（传编码，如：Y）
+     * <br/> PAYPERIOD：缴费期间，传数字，趸交：1
+     * <br/> PERIODFLAG：本次固定：L
+     * <br/> PERIOD：本次固定：0
+     * <br/> POLICYYEAR:保单年度
+     * <br/> RATE：费率（在表基础上/1000）
+     * <br/> AMNT：本次固定：null
+     * <br/> SECURITYFLAG:有无社保，0：无社保，1：有社保
+     * <br/> PLANCODE:本次固定：null
+     * <br/> RETIREAGE：约定年龄
+     *
+     * @param excelName
+     * @param sqlName
+     */
+    private static void ReducedPremBTest(String excelName, String sqlName) {
+        try {
+            String filePath = RateTest.RESOURCES_PATH + excelName + ".xlsx";
+            String sqlFilePath = RateTest.RESOURCES_PATH + sqlName;
+
+            ReducedPremB reducedPremB = new ReducedPremB("211509", "150901");
+            // 有基本医疗保险
+            reducedPremB.createSqlFile(filePath, sqlFilePath + "_sheet0.txt", 0, RateInfo.builder().securityFlag("1").build());
+            // 无基本医疗保险
+            reducedPremB.createSqlFile(filePath, sqlFilePath + "_sheet1.txt", 1, RateInfo.builder().securityFlag("0").build());
+        } catch (Exception ex) {
+            System.out.println("ReducedAmntBTest Exception:" + ex.getMessage());
+        }
+    }
+    /**
+     * 费率表A款模板
+     * <br/> RISKCODE：险种编码，本次固定：211510
+     * <br/> DUTYCODE：责任编码，本次固定：151001
+     * <br/> MINAGE, MAXAGE:年龄，这两个值保持一致
+     * <br/> GENDER:性别，0：男，1：女（传编码,如：0）
+     * <br/> PAYUNIT：缴费期间单位，年：Y，周岁：A，趸交：Y（传编码，如：Y）
+     * <br/> PAYPERIOD：缴费期间，传数字，趸交：1
+     * <br/> PERIODFLAG：本次固定：L
+     * <br/> PERIOD：本次固定：0
+     * <br/> POLICYYEAR:保单年度
+     * <br/> RATE：费率（在表基础上/1000）
+     * <br/> AMNT：本次固定：null
+     * <br/> SECURITYFLAG:有无社保，0：无社保，1：有社保
+     * <br/> PLANCODE:本次固定：null
+     * <br/> RETIREAGE：约定年龄 本次固定null
+     *
+     * @param excelName
+     * @param sqlName
+     */
+    private static void RateATest(String excelName, String sqlName) {
+        try {
+            String filePath = RateTest.RESOURCES_PATH + excelName + ".xlsx";
+            String sqlFilePath = RateTest.RESOURCES_PATH + sqlName;
+
+            RateA rateA = new RateA("211510", "151001");
+            // 基本责任
+            rateA.createSqlFile(filePath, sqlFilePath + "_sheet0.txt", 0);
+            // 基本责任-次标体等级50
+            rateA.createSqlFile(filePath, sqlFilePath + "_sheet1.txt", 1);
+            // 基本责任-次标体等级75
+            rateA.createSqlFile(filePath, sqlFilePath + "_sheet2.txt", 2);
+            // 基本责任-次标体等级100
+            rateA.createSqlFile(filePath, sqlFilePath + "_sheet3.txt", 3);
+            // 基本责任-次标体等级125
+            rateA.createSqlFile(filePath, sqlFilePath + "_sheet4.txt", 4);
+            // 基本责任-次标体等级150
+            rateA.createSqlFile(filePath, sqlFilePath + "_sheet5.txt", 5);
+        } catch (Exception ex) {
+            System.out.println("RateATest Exception:" + ex.getMessage());
+        }
+    }
+
 
     /**
      * 费率表-基本责任
