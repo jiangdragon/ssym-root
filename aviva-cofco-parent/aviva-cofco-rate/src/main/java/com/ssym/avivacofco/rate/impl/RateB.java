@@ -4,7 +4,7 @@ import com.ssym.avivacofco.rate.AbstractSheetService;
 
 /**
  * @author 三傻云梦
- * @Description 费率表A款, Sheet与保单字段对应关系
+ * @Description 费率表B款, Sheet与保单字段对应关系
  * <br/> RISKCODE:险种编码
  * <br/> DUTYCODE:责任编码
  * <br/> MINAGE:最小年龄
@@ -19,18 +19,18 @@ import com.ssym.avivacofco.rate.AbstractSheetService;
  * <br/> AMNT:保额[默认null]
  * <br/> SECURITYFLAG:社保标识[无社保0 有社保1]
  * <br/> PLANCODE:计划编码[默认null]
- * <br/> RETIREAGE:约定年龄[默认null]
+ * <br/> RETIREAGE:约定年龄
  * @Email jiangdragon@126.com | jianglong@sinosoft.com.cn
  * @Time 2026/2/25
  */
-public class RateA extends AbstractSheetService {
+public class RateB extends AbstractSheetService {
     /**
      * 构造函数
      *
      * @param riskCode 险种编码
      * @param dutyCode 责任编码
      */
-    public RateA(String riskCode, String dutyCode) {
+    public RateB(String riskCode, String dutyCode) {
         this.riskCode = riskCode;
         this.dutyCode = dutyCode;
     }
@@ -44,14 +44,15 @@ public class RateA extends AbstractSheetService {
     @Override
     protected void init() {
         // 设置费率属性对应序号
-        this.props.add("6_N_保险期间");
-        this.props.add("7_N_社保状态");
-        this.props.add("8_N_缴费期间");
-        this.props.add("9_N_性别");
+        this.props.add("6_N_约定年龄");
+        this.props.add("7_N_保险期间");
+        this.props.add("8_N_社保状态");
+        this.props.add("9_N_缴费期间");
+        this.props.add("10_N_性别");
         this.props.add("N_0_年龄");
         // 设置表格表头属性
         this.headerStartRowIndex = 6;
-        this.headerRowCount = 4;
+        this.headerRowCount = 5;
         this.spaceRowCount = 2;
         // 设置SQL插入语句
         this.plSQLValCount = 20000;
@@ -63,7 +64,7 @@ public class RateA extends AbstractSheetService {
         stringBuffer = new StringBuffer();
         stringBuffer.append("('" + this.riskCode + "', '" + this.dutyCode + "', ");
         stringBuffer.append("${MINAGE}, ${MAXAGE}, '${GENDER}', '${PAYUNIT}', ${PAYPERIOD}, ");
-        stringBuffer.append("'L', 0, ${RATE}, null, '${SECURITYFLAG}', null, null)");
+        stringBuffer.append("'L', 0, ${RATE}, null, '${SECURITYFLAG}', null, ${RETIREAGE})");
         this.plSQLVal = stringBuffer.toString();
     }
 

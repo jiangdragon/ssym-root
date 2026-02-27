@@ -7,6 +7,7 @@ import cn.hutool.json.JSONUtil;
 import com.ssym.avivacofco.rate.dto.RateInfo;
 import com.ssym.avivacofco.util.ExcelUtil;
 import com.ssym.avivacofco.util.FileUtil;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.slf4j.Logger;
@@ -67,6 +68,10 @@ public abstract class AbstractSheetService implements RateCalculationService {
      * 社保标识[无社保0 有社保1]
      */
     protected String securityFlag = "";
+    /**
+     * 标准体等级["0.5", "0.75", "1", "1.25", "1.5"]
+     */
+    protected String addFeeRate = "";
     /**
      * 数据表头开始行号[以0开始]
      */
@@ -182,7 +187,13 @@ public abstract class AbstractSheetService implements RateCalculationService {
             int cellCount = rowData.getPhysicalNumberOfCells();
             // 读取费率在行中的属性暂存到费率headerDataMap中
             for (int cellIndex = 0; cellIndex < cellCount; cellIndex++) {
-                String cellVal = ExcelUtil.getCellVal(rowData.getCell(cellIndex));
+                Cell cell = rowData.getCell(cellIndex);
+                // 处理合并单元格
+                if (ExcelUtil.isMergedRegion(sheet, cell)) {
+                    cell = ExcelUtil.getMergedRegionCell(sheet, cell);
+                }
+                String cellVal = ExcelUtil.getCellVal(cell);
+
                 if (StrUtil.isEmpty(cellVal)) {
                     continue;
                 }
@@ -339,11 +350,35 @@ public abstract class AbstractSheetService implements RateCalculationService {
         return resultText;
     }
 
+    /**
+     * 社保标识get
+     * @return
+     */
     public String getSecurityFlag() {
         return securityFlag;
     }
 
+    /**
+     * 社保标识set
+     * @param securityFlag
+     */
     public void setSecurityFlag(String securityFlag) {
         this.securityFlag = securityFlag;
+    }
+
+    /**
+     * 标准体等级get
+     * @return
+     */
+    public String getAddFeeRate() {
+        return addFeeRate;
+    }
+
+    /**
+     * 标准体等级set
+     * @param addFeeRate
+     */
+    public void setAddFeeRate(String addFeeRate) {
+        this.addFeeRate = addFeeRate;
     }
 }

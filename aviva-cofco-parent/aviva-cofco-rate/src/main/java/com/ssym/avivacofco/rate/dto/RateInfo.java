@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 /**
- * @author WB20200724005
+ * @author 三傻云梦
  * @Description 费率Bean对象
  * @Email jiangdragon@126.com | jianglong@sinosoft.com.cn
  * @Time 2026/2/26
@@ -62,4 +62,8 @@ public class RateInfo {
      * 最大年龄
      */
     private String maxAge;
+    /**
+     * 标准体等级
+     */
+    private String addFeeRate;
 }
